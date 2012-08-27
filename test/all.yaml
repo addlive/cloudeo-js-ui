@@ -1,0 +1,6 @@
+server: http://localhost:9090
+load:
+  - ../test/lib/*.js
+  - ../src/js/*.js
+test:
+  - ../test/*.js

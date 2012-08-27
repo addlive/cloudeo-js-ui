@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<project name="Cloudeo UI" basedir="." default="JSHint">
+
+  <property name="toolsdir" value="${basedir}/tools" />
+  <property name="jstestdriver.jar"
+            value="${toolsdir}/JsTestDriver-1.3.4.b.jar" />
+  <property name="jstestdriver.port" value="9090" />
+
+  <target name="JSHint" description="Verifies the source directory using the
+          JSHint tool">
+    <path id="jshint.path">
+      <fileset dir="${toolsdir}" includes="ant-jshint-0.3.1-deps.jar"/>
+    </path>
+
+    <taskdef name="jshint" classname="com.philmander.jshint.JsHintAntTask"
+             classpathref="jshint.path" />
+
+    <jshint dir="${basedir}/src/js" includes="**/*.js"
+            optionsFile="${toolsdir}/jshint.properties"
+        globals="jQuery:true,CDO:true"
+        jshintSrc="${toolsdir}/jshint.js"/>
+  </target>
+
+  <target name="test.serverRun">
+
+    <java jar="${jstestdriver.jar}" fork="true">
+      <arg value="--port"/>
+      <arg value="${jstestdriver.port}"/>
+    </java>
+
+  </target>
+
+  <target name="test">
+    <java jar="${jstestdriver.jar}" fork="true" failonerror="true">
+      <arg value="--config"/>
+      <arg value="test\all.yaml"/>
+      <arg value="--server"/>
+      <arg value="http://localhost:9090"/>
+      <arg value="--tests"/>
+      <arg value="all"/>
+      <arg value="--raiseOnFailure"/>
+      <arg value="true"/>
+    </java>
+
+  </target>
+
+</project>
